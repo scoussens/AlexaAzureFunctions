@@ -17,10 +17,13 @@
   },
   "homepage": "https://github.com/scoussens/AlexaAzureFunctions#readme",
   "dependencies": {
-    "alexa-sdk": "^1.0.20"
+    "alexa-sdk": "^1.0.20",
+    "moment": "^2.19.2",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "@types/alexa-sdk": "^1.0.10",
+    "@types/uuid": "^3.4.3",
     "typescript": "^2.6.1"
   }
 }

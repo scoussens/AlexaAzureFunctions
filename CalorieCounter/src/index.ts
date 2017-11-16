@@ -1,6 +1,6 @@
 import * as Alexa from 'alexa-sdk';
-import { LaunchRequest } from 'alexa-sdk';
 import { HttpContext, HttpRequest } from './azure.model';
+import AzureContext from './azure-context';
 
 const APP_ID = undefined;
 const SKILL_NAME = 'Space Facts';
@@ -27,28 +27,41 @@ const data = [
 
 export const index = (context: HttpContext, req: HttpRequest) => {
     context.log(JSON.stringify(req, null, 2));
+    const awsContext = new AzureContext('CalorieCounter', context);
 
-    context.res = {
-        status: 200,
-        body: {
-            version: "1.0",
-            sessionAttributes: {},
-            response: {
-                outputSpeech: {
-                    type: "PlainText",
-                    text: GetNewFact()
-                },
-                card: {
-                    type: "Simple",
-                    title: "GetNewFactIntent",
-                    content: "Dad rocks!"
-                },
-                shouldEndSession: true
-            }
+    let alexa = Alexa.handler(req.body, awsContext);
+    alexa.appId = 'amzn1.ask.skill.bfdb16dc-14e9-41d9-b8b4-e26262ca3858';
+    let handlers: Alexa.Handlers<{}> = {
+        "AboutIntent": function() {
+            let self: Alexa.Handler<{}> = this;
+            let output: string = 'This skill was created by Seth Coussens @sethcoussens';
+            self.emit(":tellWithCard", output, "Modern Web Intent", output);
         }
     }
+    alexa.registerHandlers(handlers);
+    alexa.execute();
 
-    context.done(null)
+    // context.res = {
+    //     status: 200,
+    //     body: {
+    //         version: "1.0",
+    //         sessionAttributes: {},
+    //         response: {
+    //             outputSpeech: {
+    //                 type: "PlainText",
+    //                 text: GetNewFact()
+    //             },
+    //             card: {
+    //                 type: "Simple",
+    //                 title: "GetNewFactIntent",
+    //                 content: "Dad rocks!"
+    //             },
+    //             shouldEndSession: true
+    //         }
+    //     }
+    // }
+
+    // context.done(null)
 }
 
 function GetNewFact() {

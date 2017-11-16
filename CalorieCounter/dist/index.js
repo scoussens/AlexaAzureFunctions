@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var APP_ID = undefined;
-var SKILL_NAME = 'Space Facts';
-var GET_FACT_MESSAGE = "Here's your fact: ";
-var HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... What can I help you with?';
-var HELP_REPROMPT = 'What can I help you with?';
-var STOP_MESSAGE = 'Goodbye!';
-var data = [
+const Alexa = require("alexa-sdk");
+const azure_context_1 = require("./azure-context");
+const APP_ID = undefined;
+const SKILL_NAME = 'Space Facts';
+const GET_FACT_MESSAGE = "Here's your fact: ";
+const HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... What can I help you with?';
+const HELP_REPROMPT = 'What can I help you with?';
+const STOP_MESSAGE = 'Goodbye!';
+const data = [
     'A year on Mercury is just 88 days long.',
     'Despite being farther from the Sun, Venus experiences higher temperatures than Mercury.',
     'Venus rotates counter-clockwise, possibly because of a collision in the past with an asteroid.',
@@ -21,31 +23,43 @@ var data = [
     'The temperature inside the Sun can reach 15 million degrees Celsius.',
     'The Moon is moving approximately 3.8 cm away from our planet every year.',
 ];
-exports.index = function (context, req) {
+exports.index = (context, req) => {
     context.log(JSON.stringify(req, null, 2));
-    context.res = {
-        status: 200,
-        body: {
-            version: "1.0",
-            sessionAttributes: {},
-            response: {
-                outputSpeech: {
-                    type: "PlainText",
-                    text: GetNewFact()
-                },
-                card: {
-                    type: "Simple",
-                    title: "GetNewFactIntent",
-                    content: "Dad rocks!"
-                },
-                shouldEndSession: true
-            }
+    const awsContext = new azure_context_1.default('CalorieCounter', context);
+    let alexa = Alexa.handler(req.body, awsContext);
+    alexa.appId = 'amzn1.ask.skill.bfdb16dc-14e9-41d9-b8b4-e26262ca3858';
+    let handlers = {
+        "AboutIntent": function () {
+            let self = this;
+            let output = 'This skill was created by Seth Coussens @sethcoussens';
+            self.emit(":tellWithCard", output, "Modern Web Intent", output);
         }
     };
-    context.done(null);
+    alexa.registerHandlers(handlers);
+    alexa.execute();
+    // context.res = {
+    //     status: 200,
+    //     body: {
+    //         version: "1.0",
+    //         sessionAttributes: {},
+    //         response: {
+    //             outputSpeech: {
+    //                 type: "PlainText",
+    //                 text: GetNewFact()
+    //             },
+    //             card: {
+    //                 type: "Simple",
+    //                 title: "GetNewFactIntent",
+    //                 content: "Dad rocks!"
+    //             },
+    //             shouldEndSession: true
+    //         }
+    //     }
+    // }
+    // context.done(null)
 };
 function GetNewFact() {
-    var factArr = data;
-    var factIndex = Math.floor(Math.random() * factArr.length);
+    const factArr = data;
+    const factIndex = Math.floor(Math.random() * factArr.length);
     return factArr[factIndex];
 }
