@@ -30,12 +30,10 @@ exports.index = (context, req) => {
     alexa.appId = 'amzn1.ask.skill.bfdb16dc-14e9-41d9-b8b4-e26262ca3858';
     let handlers = {
         "AboutIntent": function () {
-            let self = this;
             let output = 'This skill was created by Seth Coussens @sethcoussens';
-            self.emit(":tellWithCard", output, "GetNewFactIntent", output);
+            this.emit(":tellWithCard", output, "GetNewFactIntent", output);
         },
         'GetNewFactIntent': function () {
-            let self = this;
             const factArr = data;
             const factIndex = Math.floor(Math.random() * factArr.length);
             const randomFact = factArr[factIndex];

@@ -60,6 +60,7 @@ export default class AwsContext {
 
     succeed = (result: any) => {
         this.end = Date.now();
+        this.azureContext.log(`Success result: ${result}`); // logging
 
         this.azureContext.done(null, result);
         return;
@@ -67,6 +68,7 @@ export default class AwsContext {
 
     fail = (err: any) => {
         this.end = Date.now();
+        this.azureContext.log(`Error logged: ${err}`); // logging
 
         if (typeof err === 'string') {
             err = new Error(err);
