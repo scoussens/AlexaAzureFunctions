@@ -35,7 +35,15 @@ export const index = (context: HttpContext, req: HttpRequest) => {
         "AboutIntent": function() {
             let self: Alexa.Handler<{}> = this;
             let output: string = 'This skill was created by Seth Coussens @sethcoussens';
-            self.emit(":tellWithCard", output, "Modern Web Intent", output);
+            self.emit(":tellWithCard", output, "GetNewFactIntent", output);
+        },
+        'GetNewFactIntent': function() {
+            let self: Alexa.Handler<{}> = this;
+            const factArr = data;
+            const factIndex = Math.floor(Math.random() * factArr.length);
+            const randomFact = factArr[factIndex];
+            const speechOutput = GET_FACT_MESSAGE + randomFact;
+            this.emit(':tellWithCard', randomFact, ':responseReady', speechOutput);
         }
     }
     alexa.registerHandlers(handlers);
