@@ -33,7 +33,8 @@ const data = [
 //=========================================================================================================================================
 //Editing anything below this line might break your skill.
 //=========================================================================================================================================
-exports.handler = (event, context, callback) => {
+exports.index = (req, context) => {
+    context.log(req);
     var alexa = Alexa.handler(event, context);
     alexa.appId = APP_ID;
     alexa.registerHandlers(handlers);
