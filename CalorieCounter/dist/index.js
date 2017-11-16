@@ -35,6 +35,7 @@ const data = [
 //=========================================================================================================================================
 exports.index = (req, context) => {
     context.log(req);
+    let event = req.body;
     var alexa = Alexa.handler(event, context);
     alexa.appId = APP_ID;
     alexa.registerHandlers(handlers);
