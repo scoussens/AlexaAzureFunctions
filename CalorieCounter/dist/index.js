@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Alexa = require("alexa-sdk");
 var APP_ID = undefined;
 var SKILL_NAME = 'Space Facts';
 var GET_FACT_MESSAGE = "Here's your fact: ";
@@ -24,38 +23,23 @@ var data = [
 ];
 exports.index = function (context, req) {
     context.log(JSON.stringify(req, null, 2));
-    var request = req.body;
-    var ctx = req.body.context;
-    var alexa = Alexa.handler(request, ctx);
-    alexa.appId = '';
-    alexa.registerHandlers(handlers);
-    alexa.execute();
-};
-var handlers = {
-    'LaunchRequest': function () {
-        var self = this;
-        self.emit('GetNewFactIntent');
-    },
-    'GetNewFactIntent': function () {
-        var self = this;
-        var factArr = data;
-        var factIndex = Math.floor(Math.random() * factArr.length);
-        var randomFact = factArr[factIndex];
-        var output = GET_FACT_MESSAGE + randomFact;
-        self.emit(':tellWithCard', output, ':responseReady', output);
-    },
-    'AMAZON.HelpIntent': function () {
-        var self = this;
-        var speechOutput = HELP_MESSAGE;
-        var reprompt = HELP_REPROMPT;
-        self.emit(':responseReady', HELP_MESSAGE);
-    },
-    'AMAZON.CancelIntent': function () {
-        var self = this;
-        self.emit(':responseReady', STOP_MESSAGE);
-    },
-    'AMAZON.StopIntent': function () {
-        var self = this;
-        self.emit(':responseReady', STOP_MESSAGE);
-    },
+    context.res = {
+        status: 200,
+        body: {
+            version: "1.0",
+            sessionAttributes: {},
+            response: {
+                outputSpeech: {
+                    type: "PlainText",
+                    text: "What up, dude? Do you know how much Dad rocks?"
+                },
+                card: {
+                    type: "Simple",
+                    title: "GetNewFactIntent",
+                    content: "Dad rocks!"
+                },
+                shouldEndSession: true
+            }
+        }
+    };
 };

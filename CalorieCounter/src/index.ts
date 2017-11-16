@@ -1,5 +1,6 @@
 import * as Alexa from 'alexa-sdk';
 import { LaunchRequest } from 'alexa-sdk';
+import { HttpContext, IFunctionRequest } from './azure.model';
 
 const APP_ID = undefined;
 const SKILL_NAME = 'Space Facts';
@@ -24,42 +25,26 @@ const data = [
     'The Moon is moving approximately 3.8 cm away from our planet every year.',
 ];
 
-export const index = (context: any, req: any) => {
+export const index = (context: HttpContext, req: IFunctionRequest) => {
     context.log(JSON.stringify(req, null, 2));
 
-    let request = req.body as Alexa.RequestBody<{}>;
-    let ctx = req.body.context;
-    const alexa = Alexa.handler(request, ctx);
-    alexa.appId = '';
-    alexa.registerHandlers(handlers);
-    alexa.execute();
+    context.res = {
+        status: 200,
+        body: {
+            version: "1.0",
+            sessionAttributes: {},
+            response: {
+                outputSpeech: {
+                    type: "PlainText",
+                    text: "What up, dude? Do you know how much Dad rocks?"
+                },
+                card: {
+                    type: "Simple",
+                    title: "GetNewFactIntent",
+                    content: "Dad rocks!"
+                },
+                shouldEndSession: true
+            }
+        }
+    }
 }
-
-const handlers: Alexa.Handlers<{}> = {
-    'LaunchRequest': function () {
-        let self: Alexa.Handler<{}> = this;
-        self.emit('GetNewFactIntent');
-    },
-    'GetNewFactIntent': function () {
-        let self: Alexa.Handler<{}> = this;
-        const factArr = data;
-        const factIndex = Math.floor(Math.random() * factArr.length);
-        const randomFact = factArr[factIndex];
-        const output = GET_FACT_MESSAGE + randomFact;
-        self.emit(':tellWithCard', output, ':responseReady', output);
-    },
-    'AMAZON.HelpIntent': function () {
-        let self: Alexa.Handler<{}> = this;
-        const speechOutput = HELP_MESSAGE;
-        const reprompt = HELP_REPROMPT;
-        self.emit(':responseReady', HELP_MESSAGE);
-    },
-    'AMAZON.CancelIntent': function () {
-        let self: Alexa.Handler<{}> = this;
-        self.emit(':responseReady', STOP_MESSAGE);
-    },
-    'AMAZON.StopIntent': function () {
-        let self: Alexa.Handler<{}> = this;
-        self.emit(':responseReady', STOP_MESSAGE);
-    },
-};
