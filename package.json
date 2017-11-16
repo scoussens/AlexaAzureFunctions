@@ -1,0 +1,26 @@
+{
+  "name": "alexaazurefunctions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scoussens/AlexaAzureFunctions.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scoussens/AlexaAzureFunctions/issues"
+  },
+  "homepage": "https://github.com/scoussens/AlexaAzureFunctions#readme",
+  "dependencies": {
+    "alexa-sdk": "^1.0.20"
+  },
+  "devDependencies": {
+    "@types/alexa-sdk": "^1.0.10",
+    "typescript": "^2.6.1"
+  }
+}
