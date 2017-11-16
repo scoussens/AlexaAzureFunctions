@@ -1,6 +1,6 @@
 import * as Alexa from 'alexa-sdk';
 import { LaunchRequest } from 'alexa-sdk';
-import { HttpContext, IFunctionRequest } from './azure.model';
+import { HttpContext, HttpRequest } from './azure.model';
 
 const APP_ID = undefined;
 const SKILL_NAME = 'Space Facts';
@@ -25,7 +25,7 @@ const data = [
     'The Moon is moving approximately 3.8 cm away from our planet every year.',
 ];
 
-export const index = (context: HttpContext, req: IFunctionRequest) => {
+export const index = (context: HttpContext, req: HttpRequest) => {
     context.log(JSON.stringify(req, null, 2));
 
     context.res = {
@@ -36,7 +36,7 @@ export const index = (context: HttpContext, req: IFunctionRequest) => {
             response: {
                 outputSpeech: {
                     type: "PlainText",
-                    text: "What up, dude? Do you know how much Dad rocks?"
+                    text: GetNewFact()
                 },
                 card: {
                     type: "Simple",
@@ -49,4 +49,10 @@ export const index = (context: HttpContext, req: IFunctionRequest) => {
     }
 
     context.done(null)
+}
+
+function GetNewFact() {
+    const factArr = data;
+    const factIndex = Math.floor(Math.random() * factArr.length);
+    return factArr[factIndex];
 }

@@ -31,7 +31,7 @@ exports.index = function (context, req) {
             response: {
                 outputSpeech: {
                     type: "PlainText",
-                    text: "What up, dude? Do you know how much Dad rocks?"
+                    text: GetNewFact()
                 },
                 card: {
                     type: "Simple",
@@ -44,3 +44,8 @@ exports.index = function (context, req) {
     };
     context.done(null);
 };
+function GetNewFact() {
+    var factArr = data;
+    var factIndex = Math.floor(Math.random() * factArr.length);
+    return factArr[factIndex];
+}

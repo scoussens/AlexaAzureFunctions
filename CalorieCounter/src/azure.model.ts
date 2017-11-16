@@ -1,12 +1,23 @@
-export interface IFunctionRequest {
+export interface HttpRequest {
     body: any;
+    headers: any;
     method: string;
-    data: any;
+    originalUrl: string;
+    query: any;
     params: any;
+    rawBody: string;
+}
+
+export interface HttpResponse {
+    body?: any;
+    headers?: any;
+    isRaw?: boolean;
+    status?: number;
 }
 
 export interface HttpContext {
-    res: any;
+    res: HttpResponse;
+    req: HttpRequest;
     done(err: any, callback?: any): void;
     log(message: any): void;
 }
