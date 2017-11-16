@@ -7,7 +7,7 @@ export interface IFunctionRequest {
 
 export interface HttpContext {
     res: any;
-    done(err: any, callback: any): void;
+    done(err: any, callback?: any): void;
     log(message: any): void;
 }
 

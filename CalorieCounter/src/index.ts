@@ -47,4 +47,6 @@ export const index = (context: HttpContext, req: IFunctionRequest) => {
             }
         }
     }
+
+    context.done(null)
 }

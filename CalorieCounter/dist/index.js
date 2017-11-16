@@ -42,4 +42,5 @@ exports.index = function (context, req) {
             }
         }
     };
+    context.done(null);
 };
