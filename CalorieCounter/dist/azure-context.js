@@ -11,13 +11,17 @@ class AwsContext {
         };
         this.succeed = (result) => {
             this.end = Date.now();
-            this.azureContext.log(`Success result: ${result}`); // logging
-            this.azureContext.done(null, result);
+            this.azureContext.log(`Success result: ${JSON.parse(result)}`); // logging
+            this.azureContext.res = {
+                status: 200,
+                body: result
+            };
+            this.azureContext.done(null);
             return;
         };
         this.fail = (err) => {
             this.end = Date.now();
-            this.azureContext.log(`Error logged: ${err}`); // logging
+            this.azureContext.log(`Error logged: ${JSON.parse(err)}`); // logging
             if (typeof err === 'string') {
                 err = new Error(err);
             }
