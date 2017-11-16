@@ -11,7 +11,7 @@ class AwsContext {
         };
         this.succeed = (result) => {
             this.end = Date.now();
-            this.azureContext.log(`Success result: ${JSON.parse(result)}`); // logging
+            this.azureContext.log(`Success result: ${JSON.stringify(result)}`); // logging
             this.azureContext.res = {
                 status: 200,
                 body: result
@@ -21,7 +21,7 @@ class AwsContext {
         };
         this.fail = (err) => {
             this.end = Date.now();
-            this.azureContext.log(`Error logged: ${JSON.parse(err)}`); // logging
+            this.azureContext.log(`Error logged: ${JSON.stringify(err)}`); // logging
             if (typeof err === 'string') {
                 err = new Error(err);
             }
