@@ -2,15 +2,21 @@ import * as Alexa from 'alexa-sdk';
 import { HttpContext, HttpRequest } from './azure.model';
 import AzureContext from './azure-context';
 
-const APP_ID = undefined;
-const SKILL_NAME = 'Space Facts';
-const GET_FACT_MESSAGE = "Here's your fact: ";
-const HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... What can I help you with?';
+const SKILL_NAME = 'Coussens Greeter';
+const APP_ID = 'amzn1.ask.skill.bfdb16dc-14e9-41d9-b8b4-e26262ca3858';
+const GET_GREETING_PREFIX = "Here's your greeting: ";
+const HELP_MESSAGE = 'You can say tell me a greeting, or, you can say exit... What can I help you with?';
 const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
 
 const data = [
-    'Madeleine should brush her hair, as she does not do that often.'
+    `Hey, Hey man, or Hi.`,
+    `How's it going? ...`,
+    `What's up?, What's new?, or What's going on?`,
+    `How's everything ?, How are things?, or How's life?`,
+    `How's your day? or How's your day going?`,
+    `Long time no see or It's been a while.`,
+    `Good morning, Good afternoon, or Good evening.`
 ];
 
 export const index = (context: HttpContext, req: HttpRequest) => {
@@ -18,44 +24,22 @@ export const index = (context: HttpContext, req: HttpRequest) => {
     const awsContext = new AzureContext('CalorieCounter', context);
 
     let alexa = Alexa.handler(req.body, awsContext);
-    alexa.appId = 'amzn1.ask.skill.bfdb16dc-14e9-41d9-b8b4-e26262ca3858';
+    alexa.appId = APP_ID;
     let handlers: Alexa.Handlers<{}> = {
         "AboutIntent": function() {
             let output: string = 'This skill was created by Seth Coussens @sethcoussens';
-            this.emit(":tellWithCard", output, "GetNewFactIntent", output);
+            this.emit(":tellWithCard", output, `About ${SKILL_NAME}`, output);
         },
-        'GetNewFactIntent': function() {
+        'GetNewGreetingIntent': function() {
             const factArr = data;
             const factIndex = Math.floor(Math.random() * factArr.length);
-            const randomFact = factArr[factIndex];
-            const speechOutput = GET_FACT_MESSAGE + randomFact;
-            this.emit(':tellWithCard', randomFact, ':responseReady', speechOutput);
+            const randomGreeting = factArr[factIndex];
+            const speechOutput = GET_GREETING_PREFIX + randomGreeting;
+            this.emit(':tellWithCard', speechOutput, 'Greeting', randomGreeting);
         }
     }
     alexa.registerHandlers(handlers);
     alexa.execute();
-
-    // context.res = {
-    //     status: 200,
-    //     body: {
-    //         version: "1.0",
-    //         sessionAttributes: {},
-    //         response: {
-    //             outputSpeech: {
-    //                 type: "PlainText",
-    //                 text: GetNewFact()
-    //             },
-    //             card: {
-    //                 type: "Simple",
-    //                 title: "GetNewFactIntent",
-    //                 content: "Dad rocks!"
-    //             },
-    //             shouldEndSession: true
-    //         }
-    //     }
-    // }
-
-    // context.done(null)
 }
 
 function GetNewFact() {
