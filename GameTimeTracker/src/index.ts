@@ -16,9 +16,10 @@ export const index = (context: HttpContext, req: HttpRequest) => {
         },
         'StartTimerIntent': function () {
             let datetime = new Date(this.event.request.timestamp);
-            let hour = datetime.getHours();
+            let hour = datetime.getHours() > 12 ? datetime.getHours() - 12 : datetime.getHours();
+            let ampm = datetime.getHours() > 12 ? 'pm' : 'am';
             let minute = datetime.getMinutes();
-            this.emit(':tell', `Timer started at <say-as interpret-as="time">${hour}'${minute}"</say-as>!`);
+            this.emit(':tell', `Timer started at ${hour} ${minute}${ampm}!`);
         },
         'StopTimerIntent': function () {
             this.emit(':tell', 'Timer stopped! You have x time left.');
