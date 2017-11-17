@@ -14,9 +14,9 @@ exports.index = (context, req) => {
         'StartTimerIntent': function () {
             let datetime = new Date(this.event.request.timestamp);
             let hour = datetime.getHours() > 12 ? datetime.getHours() - 12 : datetime.getHours();
-            let ampm = datetime.getHours() > 12 ? 'pm' : 'am';
+            let postfix = datetime.getHours() > 12 ? 'pm' : 'am';
             let minute = datetime.getMinutes();
-            this.emit(':tell', `Timer started at ${hour} ${minute}${ampm}!`);
+            this.emit(':tell', `Timer started at ${hour}:${minute}${postfix}!`);
         },
         'StopTimerIntent': function () {
             this.emit(':tell', 'Timer stopped! You have x time left.');
