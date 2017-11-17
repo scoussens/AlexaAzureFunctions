@@ -1,6 +1,6 @@
 import * as Alexa from 'alexa-sdk';
 import { HttpContext, HttpRequest } from './azure.model';
-import AzureContext from './azure-context';
+import { Context } from 'azure-alexa-mock-context';
 
 const APP_ID = undefined;
 const SKILL_NAME = 'Space Facts';
@@ -27,7 +27,7 @@ const data = [
 
 export const index = (context: HttpContext, req: HttpRequest) => {
     context.log(JSON.stringify(req, null, 2));
-    const awsContext = new AzureContext('CalorieCounter', context);
+    const awsContext = new Context('CalorieCounter', context);
 
     let alexa = Alexa.handler(req.body, awsContext);
     alexa.appId = 'amzn1.ask.skill.bfdb16dc-14e9-41d9-b8b4-e26262ca3858';
@@ -46,28 +46,6 @@ export const index = (context: HttpContext, req: HttpRequest) => {
     }
     alexa.registerHandlers(handlers);
     alexa.execute();
-
-    // context.res = {
-    //     status: 200,
-    //     body: {
-    //         version: "1.0",
-    //         sessionAttributes: {},
-    //         response: {
-    //             outputSpeech: {
-    //                 type: "PlainText",
-    //                 text: GetNewFact()
-    //             },
-    //             card: {
-    //                 type: "Simple",
-    //                 title: "GetNewFactIntent",
-    //                 content: "Dad rocks!"
-    //             },
-    //             shouldEndSession: true
-    //         }
-    //     }
-    // }
-
-    // context.done(null)
 }
 
 function GetNewFact() {
