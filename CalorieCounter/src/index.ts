@@ -10,13 +10,23 @@ const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
 
 const data = [
-    `Hey, Hey man, or Hi.`,
+    `Hey.`,
+    `Hey man.`, 
+    `Hi.`,
     `How's it going? ...`,
-    `What's up?, What's new?, or What's going on?`,
-    `How's everything ?, How are things?, or How's life?`,
-    `How's your day? or How's your day going?`,
-    `Long time no see or It's been a while.`,
-    `Good morning, Good afternoon, or Good evening.`
+    `What's up?`,
+    `What's new?`,
+    `What's going on?`,
+    `How's everything?`,
+    `How are things?`,
+    `How's life?`,
+    `How's your day?`,
+    `How's your day going?`,
+    `Long time no see.`,
+    `It's been a while.`,
+    `Good morning.`,
+    `Good afternoon.`,
+    `Good evening.`
 ];
 
 export const index = (context: HttpContext, req: HttpRequest) => {
