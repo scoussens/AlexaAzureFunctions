@@ -12,7 +12,10 @@ exports.index = (context, req) => {
             this.emit('StartTimerIntent');
         },
         'StartTimerIntent': function () {
-            this.emit(':tell', 'Timer started!');
+            let datetime = new Date(this.event.request.timestamp);
+            let hour = datetime.getHours();
+            let minute = datetime.getMinutes();
+            this.emit(':tell', `Timer started at <say-as interpret-as="time">${hour}'${minute}"</say-as>!`);
         },
         'StopTimerIntent': function () {
             this.emit(':tell', 'Timer stopped! You have x time left.');
