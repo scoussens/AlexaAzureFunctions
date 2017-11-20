@@ -1,0 +1,16 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=alexafunctionsa9673;AccountKey=Zr3oK4PIChEfkVZqljrFhQVjr6NeB6cBwEN6MInr0xPehkv7/iab8ksIffOafpNEk6OviMBaK11QuHWSU5mVmg==",
+    "AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=alexafunctionsa9673;AccountKey=Zr3oK4PIChEfkVZqljrFhQVjr6NeB6cBwEN6MInr0xPehkv7/iab8ksIffOafpNEk6OviMBaK11QuHWSU5mVmg==",
+    "FUNCTIONS_EXTENSION_VERSION": "~1",
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=alexafunctionsa9673;AccountKey=Zr3oK4PIChEfkVZqljrFhQVjr6NeB6cBwEN6MInr0xPehkv7/iab8ksIffOafpNEk6OviMBaK11QuHWSU5mVmg==",
+    "WEBSITE_CONTENTSHARE": "alexafunctionsapp9673",
+    "WEBSITE_NODE_DEFAULT_VERSION": "6.5.0"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*"
+  },
+  "ConnectionStrings": {}
+}
