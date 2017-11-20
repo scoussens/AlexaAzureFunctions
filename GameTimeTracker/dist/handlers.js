@@ -1,15 +1,26 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const timer_service_1 = require("./timer.service");
+const timerService = new timer_service_1.TimerSessionService();
 exports.handlers = {
     'LaunchRequest': function () {
         this.emit('StartTimerIntent');
     },
     'StartTimerIntent': function () {
-        let datetime = new Date(this.event.request.timestamp);
-        let hour = datetime.getHours() > 12 ? datetime.getHours() - 12 : datetime.getHours();
-        let postfix = datetime.getHours() > 12 ? 'pm' : 'am';
-        let minute = datetime.getMinutes();
-        this.emit(':tell', `Timer started at ${hour}:${minute}${postfix}!`);
+        return __awaiter(this, void 0, void 0, function* () {
+            let datetime = new Date(this.event.request.timestamp);
+            let result = yield timerService.getSessions();
+            console.log(JSON.stringify(result));
+            this.emit(':tell', `Timer started at <say-as interpret-as="date">${result[0].timerStarted}</say-as>!`);
+        });
     },
     'StopTimerIntent': function () {
         this.emit(':tell', 'Timer stopped! You have x time left.');

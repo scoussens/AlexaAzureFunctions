@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { config } from './config';
+import { ScapholdService } from './scaphold.service';
 
 const AUTH_TOKEN = config.SCAPHOLD_TOKEN;
 const BASE_URL = config.SCAPHOLD_URL;
@@ -18,16 +18,23 @@ export interface User {
     id: string
 }
 
-const client = axios.create({
-    baseURL: BASE_URL,
-    headers: {
-        "Authorization": `Bearer ${AUTH_TOKEN}`
+export interface AllTimerSessions {
+    viewer: {
+        allTimerSessions: {
+            pageInfo: {
+                hasNextPage: boolean,
+                hasPreviousPage: boolean
+            },
+            edges: any[]
+        }
     }
-});
+}
+
+const client = new ScapholdService(BASE_URL, AUTH_TOKEN);
 
 export class TimerSessionService {
-    async getSessions () {
-        return axios.post('', `
+    async getSessions() {
+        let query = `
         query GetTimerSessions {
             viewer {
               allTimerSessions {
@@ -43,6 +50,20 @@ export class TimerSessionService {
               }
             }
           }
-        `)
+        `;
+
+        return client.post<AllTimerSessions>(query)
+            .then(res => {
+                let sessions = res.viewer.allTimerSessions.edges || null;
+                let results: TimerSession[] = [];
+
+                if(sessions && Array.isArray(sessions)) {
+                    sessions.forEach(node => {
+                        results.push(node.node as TimerSession);
+                    })
+                }
+
+                return results;
+            });
     }
 }

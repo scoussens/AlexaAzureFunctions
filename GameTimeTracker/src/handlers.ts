@@ -1,16 +1,18 @@
 import { AlexaRequest } from './models';
 import * as Alexa from 'alexa-sdk';
+import { TimerSessionService } from './timer.service';
+
+const timerService = new TimerSessionService();
 
 export const handlers: Alexa.Handlers<AlexaRequest> = {
     'LaunchRequest': function () {
         this.emit('StartTimerIntent');
     },
-    'StartTimerIntent': function () {
+    'StartTimerIntent': async function () {
         let datetime = new Date(this.event.request.timestamp);
-        let hour = datetime.getHours() > 12 ? datetime.getHours() - 12 : datetime.getHours();
-        let postfix = datetime.getHours() > 12 ? 'pm' : 'am';
-        let minute = datetime.getMinutes();
-        this.emit(':tell', `Timer started at ${hour}:${minute}${postfix}!`);
+        let result = await timerService.getSessions();
+        console.log(JSON.stringify(result));
+        this.emit(':tell', `Timer started at <say-as interpret-as="date">${result[0].timerStarted}</say-as>!`);
     },
     'StopTimerIntent': function () {
         this.emit(':tell', 'Timer stopped! You have x time left.');
