@@ -9,6 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
+var OrderByDirection;
+(function (OrderByDirection) {
+    OrderByDirection["ASC"] = "ASC";
+    OrderByDirection["DESC"] = "DESC";
+})(OrderByDirection = exports.OrderByDirection || (exports.OrderByDirection = {}));
 class ScapholdService {
     constructor(url, token) {
         this.url = url;
@@ -20,10 +25,12 @@ class ScapholdService {
             }
         });
     }
-    post(query) {
+    post(query, variables) {
         return __awaiter(this, void 0, void 0, function* () {
+            variables = variables || {};
             return this.client.post('', {
-                query: query
+                query: query,
+                variables: variables
             })
                 .then(res => res.data.data);
         });

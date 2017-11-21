@@ -14,12 +14,16 @@ const AUTH_TOKEN = config_1.config.SCAPHOLD_TOKEN;
 const BASE_URL = config_1.config.SCAPHOLD_URL;
 const client = new scaphold_service_1.ScapholdService(BASE_URL, AUTH_TOKEN);
 class TimerSessionService {
-    getSessions() {
+    getSessions(where, orderBy) {
         return __awaiter(this, void 0, void 0, function* () {
             let query = `
-        query GetTimerSessions {
+        query ($where: TimerSessionWhereArgs, $orderBy: [TimerSessionOrderByArgs]) {
             viewer {
-              allTimerSessions {
+              allTimerSessions (where: $where, orderBy: $orderBy) {
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                }
                 edges {
                   node {
                     id
@@ -33,7 +37,14 @@ class TimerSessionService {
             }
           }
         `;
-            return client.post(query)
+            let variables = {};
+            if (where) {
+                variables.where = where;
+            }
+            if (orderBy) {
+                variables.orderBy = orderBy;
+            }
+            return client.post(query, variables)
                 .then(res => {
                 let sessions = res.viewer.allTimerSessions.edges || null;
                 let results = [];

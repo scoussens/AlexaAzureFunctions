@@ -3,7 +3,8 @@ import { HttpContext, HttpRequest } from './azure.model';
 import { Context } from 'azure-alexa-mock-context';
 import * as Alexa from 'alexa-sdk';
 import * as moment from 'moment';
-import { handlers } from './handlers';
+import { NewSessionHandlers } from './handlersNewSession';
+import { StartStateHandlers } from './handlersState';
 
 const APP_PERMISSIONS = ['read::alexa:device:all:address'];
 const APP_ID = 'amzn1.ask.skill.5c2a5512-6992-4574-b57b-5c8c89989e87';
@@ -15,6 +16,6 @@ export const index = (context: HttpContext, req: HttpRequest) => {
 
     let alexa = Alexa.handler<AlexaRequest>(req.body, awsContext);
     alexa.appId = APP_ID;
-    alexa.registerHandlers(handlers);
+    alexa.registerHandlers(NewSessionHandlers);
     alexa.execute();
 }

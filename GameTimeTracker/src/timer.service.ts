@@ -1,5 +1,5 @@
 import { config } from './config';
-import { ScapholdService } from './scaphold.service';
+import { ScapholdService, ScapholdViewFilters, OrderByObject, ScapholdUser } from './scaphold.service';
 
 const AUTH_TOKEN = config.SCAPHOLD_TOKEN;
 const BASE_URL = config.SCAPHOLD_URL;
@@ -9,13 +9,9 @@ export interface TimerSession {
     createdAt: Date,
     modifiedAt: Date,
     availableTime: number,
-    user: User,
+    user: ScapholdUser,
     timerStarted: Date,
     timerStopped: Date
-}
-
-export interface User {
-    id: string
 }
 
 export interface AllTimerSessions {
@@ -33,11 +29,15 @@ export interface AllTimerSessions {
 const client = new ScapholdService(BASE_URL, AUTH_TOKEN);
 
 export class TimerSessionService {
-    async getSessions() {
+    async getSessions(where?: any, orderBy?: OrderByObject[]) {
         let query = `
-        query GetTimerSessions {
+        query ($where: TimerSessionWhereArgs, $orderBy: [TimerSessionOrderByArgs]) {
             viewer {
-              allTimerSessions {
+              allTimerSessions (where: $where, orderBy: $orderBy) {
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                }
                 edges {
                   node {
                     id
@@ -52,7 +52,12 @@ export class TimerSessionService {
           }
         `;
 
-        return client.post<AllTimerSessions>(query)
+        let variables: ScapholdViewFilters = {};
+
+        if(where) { variables.where = where; }
+        if(orderBy) { variables.orderBy = orderBy; }
+
+        return client.post<AllTimerSessions>(query, variables)
             .then(res => {
                 let sessions = res.viewer.allTimerSessions.edges || null;
                 let results: TimerSession[] = [];

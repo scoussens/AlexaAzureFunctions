@@ -8,21 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const timer_service_1 = require("./timer.service");
-const timerService = new timer_service_1.TimerSessionService();
-const TIMER_STATES = {
-    RUNNING: '_RUNNINGTIMER',
-    START: '_STARTTIMER',
-    STOPPED: '_STOPPEDTIMER',
-    HELP: '_HELPMODE' //the user is asking for help
-};
+const models_1 = require("./models");
 exports.handlers = {
     'LaunchRequest': function () {
-        this.handler.state = TIMER_STATES.START;
+        this.handler.state = models_1.HandlerStates.START;
         this.emitWithState('StartTimer', true);
     },
     'AMAZON.StartOverIntent': function () {
-        this.handler.state = TIMER_STATES.START;
+        this.handler.state = models_1.HandlerStates.START;
         this.emitWithState('StartTimer', true);
     },
     'StartTimerIntent': function () {
@@ -40,7 +33,7 @@ exports.handlers = {
         this.emit('StopTimerIntent');
     },
     'AMAZON.HelpIntent': function () {
-        this.handler.state = TIMER_STATES.HELP;
+        this.handler.state = models_1.HandlerStates.HELP;
         this.emitWithState('HelpTheUser', true);
     },
     'AMAZON.StopIntent': function () {
